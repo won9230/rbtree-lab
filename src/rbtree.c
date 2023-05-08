@@ -199,8 +199,12 @@ node_t *rbtree_find(const rbtree *t, const key_t key) {
 }
 
 node_t *rbtree_min(const rbtree *t) {
-  // TODO: 제일 작은 수 찾기 구현
-  return t->root;
+  node_t * currentNode = t->root;
+  while (currentNode != t->nil)
+  {
+    currentNode = currentNode->left;
+  }
+  return currentNode->parent;
 }
 
 node_t *rbtree_max(const rbtree *t) {
@@ -208,9 +212,74 @@ node_t *rbtree_max(const rbtree *t) {
   return t->root;
 }
 
-int rbtree_erase(rbtree *t, node_t *p) {
+int rbtree_erase(rbtree *t, node_t *z) {
   // TODO: 삭제 구현
+  node_t *y = z;
+  node_t *x;
+  color_t y_original_color = y->color;
+  if(z->left == t->nil)
+  {
+    x = z->right;
+    rb_transplant(t,z,z->right);
+  }
+  else if(z->right == t->nil)
+  {
+   x = z->left;
+    rb_transplant(t,z,z->left);
+  }
+  else 
+  {
+    y == rbtree_min(z);
+    y_original_color = y->color;
+    x = y->right;
+    if(y->parent == z)
+    {
+      x->parent == y;
+    }
+    else
+    {
+      rb_transplant(t,z,y->right);
+      y->right = z->right;
+      y->right->parent = y;
+    }
+    rb_transplant(t,z,y);
+    y->left = z->left;
+    y->left->parent = y;
+    y->color = z->color;
+  }
+  if(y_original_color == RBTREE_BLACK)
+  {
+    //rb_delete_fixup(t,x)
+  }
   return 0;
+}
+
+void rb_delete_fixup(rbtree *t,node_t *x)
+{
+  while(x != t->root && x->color == RBTREE_BLACK)
+  {
+    if(x == x->parent->left)
+    {
+      
+    }
+  }
+}
+
+void rb_transplant(rbtree * t,node_t * u,node_t * v)
+{
+  if(u->parent == t->nil)
+  {
+    t->root = v;
+  }
+  else if(u == u->parent->left)
+  {
+    u->parent->left = v;
+  }
+  else
+  {
+    u->parent->right = v;
+  }
+  v->parent = u->parent;
 }
 
 int rbtree_to_array(const rbtree *t, key_t *arr, const size_t n) {

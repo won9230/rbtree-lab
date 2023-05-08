@@ -32,4 +32,5 @@ void rbtree_inster_fixup(rbtree *,node_t *);
 void left_rotate(rbtree *,node_t *);
 void right_rotate(rbtree *,node_t *);
 void delete_nil(rbtree *,node_t *);
+void rb_transplant(rbtree *,node_t *);
 #endif  // _RBTREE_H_
