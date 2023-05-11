@@ -34,5 +34,5 @@ void right_rotate(rbtree *,node_t *);
 void delete_nil(rbtree *,node_t *);
 void rb_transplant(rbtree *,node_t *,node_t *);
 void rb_delete_fixup(rbtree  *,node_t *);
-void array_walk(const rbtree *,node_t *,key_t *,int *idx);
+int array_walk(const rbtree *,node_t *,key_t *,int idx);
 #endif  // _RBTREE_H_

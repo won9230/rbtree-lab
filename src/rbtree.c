@@ -364,24 +364,39 @@ void rb_transplant(rbtree * t, node_t * u, node_t * v) //u는 트리에서 때�
   }
   v->parent = u->parent;
 }
-void array_walk(const rbtree *t,node_t *x,key_t *arr,int *idx) //중위 순위를 돌릴 함수
+// void array_walk(const rbtree *t,node_t *x,key_t *arr,int *idx) //중위 순위를 돌릴 함수
+// {
+//   if(x->left != t->nil)
+//   {
+//     array_walk(t,x->left,arr,idx);
+//   }
+//   arr[*idx] = x->key;
+//   *idx += 1;
+
+//   if(x->right != t->nil)
+//   {
+//     array_walk(t,x->right,arr,idx);
+//   }
+// }
+int array_walk(const rbtree *t,node_t *x,key_t *arr,int idx) //중위 순위를 돌릴 함수
 {
   if(x->left != t->nil)
   {
-    array_walk(t,x->left,arr,idx);
+    idx = array_walk(t,x->left,arr,idx);
   }
-  arr[*idx] = x->key;
-  *idx += 1;
+  arr[idx] = x->key;
+  idx += 1;
 
   if(x->right != t->nil)
   {
-    array_walk(t,x->right,arr,idx);
+    idx = array_walk(t,x->right,arr,idx);
   }
+  return idx;
 }
 int rbtree_to_array(const rbtree *t, key_t *arr, const size_t n) {
   // TODO: 레드 블랙 트리를 배열 바꾸는 걸 구현
   node_t *x = t->root;
   int idx = 0;
-  array_walk(t,x,arr,&idx);
+  array_walk(t,x,arr,idx);
   return 0;
 }
